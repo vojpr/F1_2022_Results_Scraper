@@ -14,7 +14,7 @@ def get_drivers_data():
         drivers_standings.append(row.strip().split("\n"))
     # Get only position, name, team and points
     driver_standings_data = [['Pos', 'Driver', 'Team', 'PTS']]
-    for driver in range(1, 22):
+    for driver in range(1, 23):
         driver_standings_data.append([drivers_standings[driver][0], drivers_standings[driver][4],
                                       drivers_standings[driver][10], drivers_standings[driver][12]])
     return driver_standings_data
