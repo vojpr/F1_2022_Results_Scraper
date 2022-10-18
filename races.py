@@ -2,17 +2,27 @@ from bs4 import BeautifulSoup
 import requests
 
 
+RACE_RESULT_URL = 'https://www.formula1.com/en/results.html/2022/races/'
+URL_VARIATIONS_FOR_EACH_RACE = ['1124/bahrain/race-result.html', '1125/saudi-arabia/race-result.html',
+                                '1108/australia/race-result.html', '1109/italy/race-result.html',
+                                '1110/miami/race-result.html', '1111/spain/race-result.html',
+                                '1112/monaco/race-result.html', '1126/azerbaijan/race-result.html',
+                                '1113/canada/race-result.html', '1114/great-britain/race-result.html',
+                                '1115/austria/race-result.html', '1116/france/race-result.html',
+                                '1117/hungary/race-result.html', '1118/belgium/race-result.html',
+                                '1119/netherlands/race-result.html', '1120/italy/race-result.html',
+                                '1133/singapore/race-result.html', '1134/japan/race-result.html',
+                                '1135/united-states/race-result.html', '1136/mexico/race-result.html',
+                                '1137/brazil/race-result.html', '1138/abu-dhabi/race-result.html']
+
+
 def get_races_data():
+    """Returns list with top 3 results for each race"""
     # Data for all races
     races_results_data = [['Grand Prix', 'Winner', 'Second', 'Third']]
-    # Variations in url for each race
-    race_response_list = ["1124/bahrain", "1125/saudi-arabia", "1108/australia", "1109/italy", "1110/miami", "1111/spain",
-                          "1112/monaco", "1126/azerbaijan", "1113/canada", "1114/great-britain", "1115/austria",
-                          "1116/france", "1117/hungary", "1118/belgium", "1119/netherlands", "1120/italy", "1133/singapore",
-                          "1134/japan", "1135/united-states", "1136/mexico", "1137/brazil", "1138/abu-dhabi"]
     # Get data for each race
-    for each in race_response_list:
-        response_race_result = requests.get(f"https://www.formula1.com/en/results.html/2022/races/{each}/race-result.html")
+    for race in URL_VARIATIONS_FOR_EACH_RACE:
+        response_race_result = requests.get(f"{RACE_RESULT_URL + race}")
         soup = BeautifulSoup(response_race_result.text, "html.parser")
         result_table = soup.find_all("tr")
         # Get finishing order of a race and clean data
@@ -26,7 +36,7 @@ def get_races_data():
         try:
             for driver in range(1, 4):
                 race_result.append(driver_order[driver][4])
-        except:
+        except IndexError:
             race_result.append("To be raced")
         # Append to list of data for all races
         races_results_data.append(race_result)

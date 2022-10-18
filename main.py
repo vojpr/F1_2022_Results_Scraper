@@ -6,6 +6,7 @@ from teams import get_teams_data
 
 
 def build_tree(data):
+    """Takes list of data and creates table"""
     tree["columns"] = tuple(data[0])
     tree['show'] = 'headings'
     # Create columns
